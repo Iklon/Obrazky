@@ -20,6 +20,7 @@ public class Controller {
 
     private int picture=0;
     private List<FileRoad> roads;
+    private File directory;
 
     public Controller() {
         roads = new ArrayList<>();
@@ -29,20 +30,18 @@ public class Controller {
     private Canvas canvas;
 
     @FXML
-    private ImageView imageview;
-
-    @FXML
     private Label label;
 
     @FXML
     private void loadDir() {
         DirectoryChooser chooser = new DirectoryChooser();
-        File directory = chooser.showDialog(null);
+        directory = chooser.showDialog(null);
         if(directory != null) {
             roads = Arrays.stream(directory.listFiles()).map(FileRoad::new).collect(Collectors.toList());
             drawImage();
         }
     }
+
     @FXML
     private void nextImg() {
         picture = roads.size() > (picture + 1) ? picture + 1 : 0;
@@ -53,5 +52,9 @@ public class Controller {
         GraphicsContext context = canvas.getGraphicsContext2D();
         roads.get(picture).draw(context);
         canvas.setOnMouseClicked(event -> roads.get(picture).onClick(event.getX(), event.getY()));
+        canvas.setHeight(roads.get(picture).getImageHeight());
+        canvas.setWidth(roads.get(picture).getImageWidth());
+        label.setText(roads.get(picture).getImg().toString().replace(directory.toString()+"\\", ""));
+
     }
 }

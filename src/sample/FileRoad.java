@@ -18,10 +18,12 @@ public class FileRoad {
     private Line left;
     private Line right;
     private File img;
+    private Image image;
     private int counter;
 
     public FileRoad(File img) {
         this.img = img;
+        this.image = new Image(img.getPath().toString());
         counter = 0;
         left = new Line();
         right = new Line();
@@ -51,23 +53,27 @@ public class FileRoad {
         this.img = img;
     }
 
+    public double getImageHeight() { return image.getHeight(); }
+
+    public double  getImageWidth() { return image.getWidth(); }
+
     public void addPoint(Point p) {
         if(counter < 4) {
-            counter++;
             switch (counter){
-                case 1:
+                case 0:
                     left.setTop(p);
                     break;
-                case 2:
+                case 1:
                     left.setBottom(p);
                     break;
-                case 3:
+                case 2:
                     right.setTop(p);
                     break;
-                case 4:
+                case 3:
                     right.setBottom(p);
                     break;
             }
+            counter++;
         }
     }
 
