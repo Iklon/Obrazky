@@ -5,7 +5,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
@@ -34,6 +33,7 @@ public class Controller {
 
     @FXML
     private void loadDir() {
+        picture= 0;
         DirectoryChooser chooser = new DirectoryChooser();
         directory = chooser.showDialog(null);
         if(directory != null) {
@@ -50,10 +50,14 @@ public class Controller {
 
     private void drawImage() {
         GraphicsContext context = canvas.getGraphicsContext2D();
+        try {
+            canvas.setHeight(new Image(new FileInputStream(roads.get(picture).getImg())).getHeight());
+            canvas.setWidth(new Image(new FileInputStream(roads.get(picture).getImg())).getWidth());
+        }catch (FileNotFoundException exc) {
+            exc.printStackTrace();
+        }
         roads.get(picture).draw(context);
         canvas.setOnMouseClicked(event -> roads.get(picture).onClick(event.getX(), event.getY()));
-        canvas.setHeight(roads.get(picture).getImageHeight());
-        canvas.setWidth(roads.get(picture).getImageWidth());
         label.setText(roads.get(picture).getImg().toString().replace(directory.toString()+"\\", ""));
 
     }

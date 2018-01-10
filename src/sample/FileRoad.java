@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -18,12 +19,10 @@ public class FileRoad {
     private Line left;
     private Line right;
     private File img;
-    private Image image;
     private int counter;
 
     public FileRoad(File img) {
         this.img = img;
-        this.image = new Image(img.getPath().toString());
         counter = 0;
         left = new Line();
         right = new Line();
@@ -53,10 +52,6 @@ public class FileRoad {
         this.img = img;
     }
 
-    public double getImageHeight() { return image.getHeight(); }
-
-    public double  getImageWidth() { return image.getWidth(); }
-
     public void addPoint(Point p) {
         if(counter < 4) {
             switch (counter){
@@ -79,7 +74,8 @@ public class FileRoad {
 
     public void draw(GraphicsContext context) {
         try {
-            context.drawImage(new Image(new FileInputStream(img)), 0, 0, 200, 200);
+            Image image = new Image(new FileInputStream(img));
+            context.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
             if(left.getTop() != null)
                 context.fillOval(left.getTop().getX(), left.getTop().getY(), 5, 5);
             if(left.getBottom() != null)
@@ -101,7 +97,9 @@ public class FileRoad {
         if(counter < 4){
             addPoint(new Point(x, y));
         }else {
-            //TODO zkontrolovat kolizi
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Chyba výběru bodů");
+            alert.setContentText("Vybrali jste více než 4 body");
         }
     }
 }
