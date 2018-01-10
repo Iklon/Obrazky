@@ -54,7 +54,7 @@ public class FileRoad {
 
     public void addPoint(Point p) {
         if(counter < 4) {
-            switch (counter){
+            switch (counter) {
                 case 0:
                     left.setTop(p);
                     break;
@@ -68,7 +68,6 @@ public class FileRoad {
                     right.setBottom(p);
                     break;
             }
-            counter++;
         }
     }
 
@@ -77,17 +76,17 @@ public class FileRoad {
             Image image = new Image(new FileInputStream(img));
             context.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
             if(left.getTop() != null)
-                context.fillOval(left.getTop().getX(), left.getTop().getY(), 5, 5);
+                context.fillOval(left.getTop().getX(), left.getTop().getY(), 8, 8);
             if(left.getBottom() != null)
-                context.fillOval(left.getBottom().getX(), left.getBottom().getY(), 5, 5);
+                context.fillOval(left.getBottom().getX(), left.getBottom().getY(), 8, 8);
             if(right.getTop() != null)
-                context.fillOval(right.getTop().getX(), right.getTop().getY(), 5, 5);
+                context.fillOval(right.getTop().getX(), right.getTop().getY(), 8, 8);
             if(right.getBottom() != null)
-                context.fillOval(right.getBottom().getX(), right.getBottom().getY(), 5, 5);
+                context.fillOval(right.getBottom().getX(), right.getBottom().getY(), 8, 8);
             if(left.getBottom() != null && left.getTop() != null)
-                context.strokeLine(left.getTop().getX(), left.getTop().getY(), left.getBottom().getX(), left.getBottom().getY());
+                context.strokeLine(left.getTop().getX()+4, left.getTop().getY()+4, left.getBottom().getX()+4, left.getBottom().getY()+4);
             if(right.getBottom() != null && right.getTop() != null)
-                context.strokeLine(right.getTop().getX(), right.getTop().getY(), right.getBottom().getX(), right.getBottom().getY());
+                context.strokeLine(right.getTop().getX()+4, right.getTop().getY()+4, right.getBottom().getX()+4, right.getBottom().getY()+4);
         }catch (FileNotFoundException exc) {
             exc.printStackTrace();
         }
@@ -101,5 +100,6 @@ public class FileRoad {
             alert.setTitle("Chyba výběru bodů");
             alert.setContentText("Vybrali jste více než 4 body");
         }
+        counter++;
     }
 }

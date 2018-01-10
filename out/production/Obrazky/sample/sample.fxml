@@ -10,7 +10,7 @@
    <children>
       <HBox alignment="CENTER">
          <children>
-            <Canvas fx:id="canvas" height="200.0" width="200.0" />
+            <Canvas fx:id="canvas" height="200.0" onMouseClicked="#canvasClicked" width="200.0" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
