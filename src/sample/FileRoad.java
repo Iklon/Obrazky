@@ -20,12 +20,14 @@ public class FileRoad {
     private Line right;
     private File img;
     private int counter;
+    private Output output;
 
     public FileRoad(File img) {
         this.img = img;
         counter = 0;
         left = new Line();
         right = new Line();
+        output = new Output(img);
     }
 
     public Line getLeft() {
@@ -85,8 +87,10 @@ public class FileRoad {
                 context.fillOval(right.getBottom().getX(), right.getBottom().getY(), 8, 8);
             if(left.getBottom() != null && left.getTop() != null)
                 context.strokeLine(left.getTop().getX()+4, left.getTop().getY()+4, left.getBottom().getX()+4, left.getBottom().getY()+4);
-            if(right.getBottom() != null && right.getTop() != null)
-                context.strokeLine(right.getTop().getX()+4, right.getTop().getY()+4, right.getBottom().getX()+4, right.getBottom().getY()+4);
+            if(right.getBottom() != null && right.getTop() != null) {
+                context.strokeLine(right.getTop().getX() + 4, right.getTop().getY() + 4, right.getBottom().getX() + 4, right.getBottom().getY() + 4);
+                output.writeImg(left, right);
+            }
         }catch (FileNotFoundException exc) {
             exc.printStackTrace();
         }
@@ -99,6 +103,7 @@ public class FileRoad {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Chyba výběru bodů");
             alert.setContentText("Vybrali jste více než 4 body");
+            alert.show();
         }
         counter++;
     }

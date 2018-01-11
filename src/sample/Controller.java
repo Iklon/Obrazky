@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 
 import java.awt.*;
@@ -51,8 +52,8 @@ public class Controller {
     }
 
     @FXML
-    private void canvasClicked() {
-        roads.get(picture).onClick(MouseInfo.getPointerInfo().getLocation().x-500, MouseInfo.getPointerInfo().getLocation().y);
+    private void canvasClicked(MouseEvent mouse) {
+        roads.get(picture).onClick(mouse.getX(), mouse.getY());
         drawImage();
     }
 
@@ -65,7 +66,6 @@ public class Controller {
             exc.printStackTrace();
         }
         roads.get(picture).draw(context);
-        //canvas.setOnMouseClicked(event -> roads.get(picture).onClick(event.getX(), event.getY()));
         label.setText(roads.get(picture).getImg().toString().replace(directory.toString()+"\\", ""));
     }
 }
