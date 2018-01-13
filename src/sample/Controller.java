@@ -3,13 +3,12 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 
-import java.awt.*;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,10 +35,11 @@ public class Controller {
 
     @FXML
     private void loadDir() {
-        picture= 0;
         DirectoryChooser chooser = new DirectoryChooser();
         directory = chooser.showDialog(null);
         if(directory != null) {
+            Input input = new Input(directory);
+            picture = input.readImgInfo();
             roads = Arrays.stream(directory.listFiles()).map(FileRoad::new).collect(Collectors.toList());
             drawImage();
         }
@@ -47,6 +47,12 @@ public class Controller {
 
     @FXML
     private void nextImg() {
+        picture = roads.size() > (picture + 1) ? picture + 1 : 0;
+        drawImage();
+    }
+
+    @FXML
+    private void previousImg() {
         picture = roads.size() > (picture + 1) ? picture + 1 : 0;
         drawImage();
     }

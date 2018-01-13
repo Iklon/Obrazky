@@ -89,7 +89,7 @@ public class FileRoad {
                 context.strokeLine(left.getTop().getX()+4, left.getTop().getY()+4, left.getBottom().getX()+4, left.getBottom().getY()+4);
             if(right.getBottom() != null && right.getTop() != null) {
                 context.strokeLine(right.getTop().getX() + 4, right.getTop().getY() + 4, right.getBottom().getX() + 4, right.getBottom().getY() + 4);
-                output.writeImg(left, right);
+                output.writeImgInfo(left, right);
             }
         }catch (FileNotFoundException exc) {
             exc.printStackTrace();

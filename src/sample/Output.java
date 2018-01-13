@@ -7,7 +7,6 @@ public class Output {
     private File file;
     private FileWriter writer;
     private BufferedWriter bufferedwriter;
-    private int lines;
 
     public Output(File file) {
         this.file = file;
@@ -17,25 +16,20 @@ public class Output {
         }catch (IOException exc) {
             exc.printStackTrace();
         }
-        lines=0;
     }
 
-    public void writeImg(Line left, Line right) {
-        System.out.println(file.getParentFile().toString());
-        System.out.println(file.getName());
+    public void writeImgInfo(Line left, Line right) {
+        System.out.println("zapis - " + file.getName());
         try {
             bufferedwriter.write(file.getName() + " [" + left.getTop().getX() + "," + left.getTop().getY()+ "]" + " [" + left.getBottom().getX() + "," + left.getBottom().getY()+ "]" +
-                    " [" + right.getTop().getX() + "," + right.getTop().getY()+ "]" + " [" + right.getBottom().getX() + "," + right.getBottom().getY()+ "]",
-                    lines*67, 67);
+                    " [" + right.getTop().getX() + "," + right.getTop().getY()+ "]" + " [" + right.getBottom().getX() + "," + right.getBottom().getY()+ "]");
             bufferedwriter.newLine();
-        }catch (IOException exc) {}
+        } catch (IOException exc){exc.printStackTrace(); }
         finally {
             try {
-                if (bufferedwriter != null)
-                    bufferedwriter.close();
-                if (writer != null)
-                    writer.close();
-            } catch (IOException ex) {ex.printStackTrace();}
+                if (bufferedwriter != null) bufferedwriter.close();
+                if (writer != null) writer.close();
+            } catch (IOException exc) {exc.printStackTrace();}
         }
     }
 }
