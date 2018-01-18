@@ -22,9 +22,12 @@ public class Controller {
     private int picture=0;
     private List<FileRoad> roads;
     private File directory;
+    private boolean last=false;
+    private Output output;
 
     public Controller() {
         roads = new ArrayList<>();
+        output = new Output();
     }
 
     @FXML
@@ -47,13 +50,20 @@ public class Controller {
 
     @FXML
     private void nextImg() {
+        if (!roads.get(picture).getWritten() && roads.get(picture).getRight().getBottom() != null) {
+            output.writeImgInfo(roads.get(picture).getLeft(), roads.get(picture).getRight(), roads.get(picture).getImg());
+            roads.get(picture).setWritten();
+        }
         picture = roads.size() > (picture + 1) ? picture + 1 : 0;
         drawImage();
+        last=false;
     }
 
     @FXML
     private void previousImg() {
-        picture = roads.size() > (picture + 1) ? picture + 1 : 0;
+        picture --;
+        if (picture == -1) picture = 0;
+        last=true;
         drawImage();
     }
 
@@ -71,7 +81,7 @@ public class Controller {
         }catch (FileNotFoundException exc) {
             exc.printStackTrace();
         }
-        roads.get(picture).draw(context);
+        roads.get(picture).draw(context, last);
         label.setText(roads.get(picture).getImg().toString().replace(directory.toString()+"\\", ""));
     }
 }

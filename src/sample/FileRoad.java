@@ -20,14 +20,14 @@ public class FileRoad {
     private Line right;
     private File img;
     private int counter;
-    private Output output;
+    private boolean written = false;
 
     public FileRoad(File img) {
         this.img = img;
         counter = 0;
         left = new Line();
         right = new Line();
-        output = new Output(img);
+        written = false;
     }
 
     public Line getLeft() {
@@ -54,6 +54,14 @@ public class FileRoad {
         this.img = img;
     }
 
+    public boolean getWritten()  {
+        System.out.println("Stav written:" + written); return written;
+    }
+
+    public void setWritten()  {
+        written = true;
+    }
+
     public void addPoint(Point p) {
         if(counter < 4) {
             switch (counter) {
@@ -73,7 +81,7 @@ public class FileRoad {
         }
     }
 
-    public void draw(GraphicsContext context) {
+    public void draw(GraphicsContext context, boolean last) {
         try {
             Image image = new Image(new FileInputStream(img));
             context.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
@@ -89,7 +97,6 @@ public class FileRoad {
                 context.strokeLine(left.getTop().getX()+4, left.getTop().getY()+4, left.getBottom().getX()+4, left.getBottom().getY()+4);
             if(right.getBottom() != null && right.getTop() != null) {
                 context.strokeLine(right.getTop().getX() + 4, right.getTop().getY() + 4, right.getBottom().getX() + 4, right.getBottom().getY() + 4);
-                output.writeImgInfo(left, right);
             }
         }catch (FileNotFoundException exc) {
             exc.printStackTrace();

@@ -4,21 +4,19 @@ import java.io.*;
 
 public class Output {
 
-    private File file;
     private FileWriter writer;
     private BufferedWriter bufferedwriter;
 
-    public Output(File file) {
-        this.file = file;
+    public Output() {
+    }
+
+    public void writeImgInfo(Line left, Line right, File file) {
         try {
             writer = new FileWriter(file.getParentFile().toString() + "\\info.txt", true);
             bufferedwriter = new BufferedWriter(writer);
         }catch (IOException exc) {
             exc.printStackTrace();
         }
-    }
-
-    public void writeImgInfo(Line left, Line right) {
         System.out.println("zapis - " + file.getName());
         try {
             bufferedwriter.write(file.getName() + " [" + left.getTop().getX() + "," + left.getTop().getY()+ "]" + " [" + left.getBottom().getX() + "," + left.getBottom().getY()+ "]" +
