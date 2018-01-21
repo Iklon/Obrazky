@@ -39,22 +39,28 @@ public class Input {
     }
 
     public int readImgInfo() {
-        String newline, lastline;
+        String newline=null, lastline;
         int count=0;
         try {
-            while ((lastline = bufferedreader.readLine()) != null){
-                if ((newline = bufferedreader.readLine()) == null) {
+            while ((lastline = bufferedreader.readLine()) != null && lastline.length() != 0){
+                newline = bufferedreader.readLine();
+                System.out.println(lastline);
+                System.out.println(newline);
+                if (newline == null) {
                     break;
                 }
             }
-            if (lastline == null) count = 0;
+            if (lastline == null) {
+                if (newline == null) count = 0;
+                else count = Integer.parseInt(newline.substring(3, 7));
+            }
             else count = Integer.parseInt(lastline.substring(3, 7));
-        } catch (IOException exc) {exc.printStackTrace(); count = 0; System.out.println("nacteni exc1");}
+        } catch (IOException exc) {exc.printStackTrace();}
         finally {
             try {
                 if (bufferedreader != null) bufferedreader.close();
                 if (reader != null) reader.close();
-            } catch (IOException exc) {exc.printStackTrace(); System.out.println("nacteni exc2");}
+            } catch (IOException exc) {exc.printStackTrace();}
         }
         return count;
     }
