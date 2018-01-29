@@ -22,7 +22,6 @@ public class Controller {
     private int picture=0;
     private List<FileRoad> roads;
     private File directory;
-    private boolean last=false;
     private Output output;
 
     public Controller() {
@@ -42,8 +41,16 @@ public class Controller {
         directory = chooser.showDialog(null);
         if(directory != null) {
             Input input = new Input(directory);
-            picture = input.readImgInfo();
+            //picture = input.readImgInfo();
             roads = Arrays.stream(directory.listFiles()).map(FileRoad::new).collect(Collectors.toList());
+
+            FileRoad fileroad;
+            while((fileroad = input.readLine()) != null) {
+                roads.set(picture, fileroad);
+                picture++;
+            }
+            input.close();
+
             drawImage();
         }
     }
@@ -52,24 +59,30 @@ public class Controller {
     private void nextImg() {
         if (!roads.get(picture).getWritten() && roads.get(picture).getRight().getBottom() != null) {
             output.writeImgInfo(roads.get(picture).getLeft(), roads.get(picture).getRight(), roads.get(picture).getImg());
-            roads.get(picture).setWritten();
+            roads.get(picture).setWritten(true);
         }
         picture = roads.size() > (picture + 1) ? picture + 1 : 0;
         drawImage();
-        last=false;
     }
 
     @FXML
     private void previousImg() {
         picture --;
         if (picture == -1) picture = 0;
-        last=true;
+        drawImage();
+    }
+
+    @FXML
+    private void deletePoints() {
+        roads.get(picture).delete();
+        output.deleteImg(roads.get(picture).getImg());
+        roads.get(picture).setWritten(false);
         drawImage();
     }
 
     @FXML
     private void canvasClicked(MouseEvent mouse) {
-        roads.get(picture).onClick(mouse.getX(), mouse.getY());
+        roads.get(picture).click(mouse.getX(), mouse.getY());
         drawImage();
     }
 
@@ -81,7 +94,7 @@ public class Controller {
         }catch (FileNotFoundException exc) {
             exc.printStackTrace();
         }
-        roads.get(picture).draw(context, last);
+        roads.get(picture).draw(context);
         label.setText(roads.get(picture).getImg().toString().replace(directory.toString()+"\\", ""));
     }
 }

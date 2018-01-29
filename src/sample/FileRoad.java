@@ -30,6 +30,10 @@ public class FileRoad {
         written = false;
     }
 
+    public void setCounter(int counter)  {
+        this.counter = counter;
+    }
+
     public Line getLeft() {
         return left;
     }
@@ -54,12 +58,10 @@ public class FileRoad {
         this.img = img;
     }
 
-    public boolean getWritten()  {
-        System.out.println("Stav written:" + written); return written;
-    }
+    public boolean getWritten()  { return written; }
 
-    public void setWritten()  {
-        written = true;
+    public void setWritten(boolean written)  {
+        this.written = written;
     }
 
     public void addPoint(Point p) {
@@ -81,7 +83,7 @@ public class FileRoad {
         }
     }
 
-    public void draw(GraphicsContext context, boolean last) {
+    public void draw(GraphicsContext context) {
         try {
             Image image = new Image(new FileInputStream(img));
             context.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
@@ -103,7 +105,7 @@ public class FileRoad {
         }
     }
 
-    public void onClick(double x, double y) {
+    public void click(double x, double y) {
         if(counter < 4){
             addPoint(new Point(x, y));
         }else {
@@ -113,5 +115,13 @@ public class FileRoad {
             alert.show();
         }
         counter++;
+    }
+
+    public void delete() {
+        counter = 0;
+        left.setTop(null);
+        left.setBottom(null);
+        right.setTop(null);
+        right.setBottom(null);
     }
 }
