@@ -26,57 +26,30 @@ public class Input {
             alert2.show();
             try {
                 info.createNewFile();
-            } catch (IOException exc) {
-                exc.printStackTrace();
-            }
+            } catch (IOException exc) {exc.printStackTrace();}
         }
 
         try {
             reader = new FileReader(info);
             bufferedreader = new BufferedReader(reader);
-        } catch (FileNotFoundException exc) {
-            exc.printStackTrace();
-        }
+        } catch (FileNotFoundException exc) {exc.printStackTrace();}
     }
 
-    public int readImgInfo() {
-        String newline=null, lastline;
-        int count=0;
-        try {
-            while ((lastline = bufferedreader.readLine()) != null && lastline.length() != 0){
-                newline = bufferedreader.readLine();
-                if (newline == null) {
-                    break;
-                }
-            }
-            if (lastline == null) {
-                if (newline == null) count = 0;
-                else count = Integer.parseInt(newline.substring(3, 7));
-            }
-            else count = Integer.parseInt(lastline.substring(3, 7));
-        } catch (IOException exc) {exc.printStackTrace();}
-        try {
-            if (bufferedreader != null) bufferedreader.close();
-            if (reader != null) reader.close();
-        } catch (IOException exc) {exc.printStackTrace();}
-        return count;
-    }
-
-    public FileRoad readLine() {
+    public FileRoad readImg() {
         String line = null;
+        Line left = new Line();
+        Line right = new Line();
         try {
             line = bufferedreader.readLine();
         } catch (IOException exc) {exc.printStackTrace();}
         if (line != null) {
-            File img = new File(info.getParentFile().getPath().toString() + "\\" + line.substring(0, 11));
-            Line left = new Line();
-            Line right = new Line();
-            left.setTop(new Point(100,100));
-            left.setBottom(new Point(100,200));
-            right.setTop(new Point(200,100));
-            right.setBottom(new Point(200,200));
+            String points [] = line.split("\\[");
+            left.setTop(new Point((double)Float.valueOf(points[1].substring(0, points[1].indexOf(","))), (double)Float.valueOf(points[1].substring(points[1].indexOf(",")+1, points[1].indexOf("]")))));
+            left.setBottom(new Point((double)Float.valueOf(points[2].substring(0, points[2].indexOf(","))), (double)Float.valueOf(points[2].substring(points[2].indexOf(",")+1, points[2].indexOf("]")))));
+            right.setTop(new Point((double)Float.valueOf(points[3].substring(0, points[3].indexOf(","))), (double)Float.valueOf(points[3].substring(points[3].indexOf(",")+1, points[3].indexOf("]")))));
+            right.setBottom(new Point((double)Float.valueOf(points[4].substring(0, points[4].indexOf(","))), (double)Float.valueOf(points[4].substring(points[4].indexOf(",")+1, points[4].indexOf("]")))));
 
-            FileRoad fileroad = new FileRoad(img);
+            FileRoad fileroad = new FileRoad(new File(info.getParentFile().getPath().toString() + "\\" + line.substring(0, 11)));
             fileroad.setCounter(4);
             fileroad.setLeft(left);
             fileroad.setRight(right);

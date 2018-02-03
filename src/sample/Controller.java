@@ -37,17 +37,17 @@ public class Controller {
 
     @FXML
     private void loadDir() {
+        picture = 0;
         DirectoryChooser chooser = new DirectoryChooser();
         directory = chooser.showDialog(null);
         if(directory != null) {
             Input input = new Input(directory);
-            //picture = input.readImgInfo();
             roads = Arrays.stream(directory.listFiles()).map(FileRoad::new).collect(Collectors.toList());
-
             FileRoad fileroad;
-            while((fileroad = input.readLine()) != null) {
-                roads.set(picture, fileroad);
-                picture++;
+            while((fileroad = input.readImg()) != null) {
+                roads.set(Integer.parseInt(fileroad.getImg().getName().toString().substring(3,7))-1, fileroad);
+                picture = Integer.parseInt(fileroad.getImg().getName().toString().substring(3,7))-1;
+                System.out.println(picture);
             }
             input.close();
 
@@ -58,8 +58,16 @@ public class Controller {
     @FXML
     private void nextImg() {
         if (!roads.get(picture).getWritten() && roads.get(picture).getRight().getBottom() != null) {
-            output.writeImgInfo(roads.get(picture).getLeft(), roads.get(picture).getRight(), roads.get(picture).getImg());
+            output.writeImg(roads.get(picture).getLeft(), roads.get(picture).getRight(), roads.get(picture).getImg());
             roads.get(picture).setWritten(true);
+        }
+        if (roads.get(picture).getLeft().getTop() != null) {
+            if (roads.get(picture).getRight().getBottom() == null ) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Uložení obrázku");
+                alert.setContentText("Nebyly vybrány 4 body - záznam nebyl uložen");
+                alert.show();
+            }
         }
         picture = roads.size() > (picture + 1) ? picture + 1 : 0;
         drawImage();
